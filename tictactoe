@@ -1,0 +1,95 @@
+def evaluate(row):
+    xinrow = 0
+    oinrow = 0
+    spaceremaining = False
+    for c in row:
+        if c == "x":
+            xinrow += 1
+        else: 
+            xinrow = 0
+        if c == "o":
+            oinrow += 1
+        else: 
+            oinrow = 0
+        if c == "-":
+            spaceremaining = True
+        if xinrow == 3:
+            return("x")
+        if oinrow == 3:
+            return("o")
+        
+    if spaceremaining == True:
+        return("-")
+    else: 
+        return("!")
+    
+def move(board: str, mark: str, position: int):
+    #returns the updated string with the given mark at the specified position
+    beforePosition = board[:position]
+    afterPosition = board[position+1:]
+    return beforePosition + mark + afterPosition
+
+def ask_player_position():
+    #asks an input to the user until they input a number between 0 and 19 (included)
+
+    while(True):
+        position = int(input("your position"))
+        if position >= 0 and position <= 19: 
+            return position
+        else:
+            print("wrong")
+        
+def player_move(board:str):
+    # updates the board with the players choice
+    board = move(board, 'x', ask_player_position())
+    return board
+
+from random import randrange
+
+def pc_move(board:str):
+    # Returns a game board afte the computer's move.
+    board = move(board, 'o', ask_pc_position(board))
+    return board
+    
+def ask_pc_position(board:str):
+    # selects a valid random position
+    while(True):
+        position:int = randrange(0, len(board))
+        if board[position] == "-":
+            return position
+
+
+initialboard = "--------------------"
+
+
+
+
+def tictactoe_1d(keith:str):
+    while(evaluate() == "x" or evaluate() == "o" or evaluate() == "!"):
+        
+        keith = player_move(keith)
+        print(keith)
+        keith = pc_move(keith)
+        print(keith)
+        print(evaluate())
+
+
+
+def tictactoe_1d():
+    print(initialboard)
+    currentBoard = initialboard
+    while(True):
+        currentBoard = player_move(currentBoard)
+        result = evaluate(currentBoard)
+        if result != "-":
+            return result
+        else:
+            currentBoard = pc_move(currentBoard)
+        print(currentBoard)
+        result = evaluate(currentBoard)
+        if result != "-":
+            return result
+        print(currentBoard)
+        
+
+tictactoe_1d()
